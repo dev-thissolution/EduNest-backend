@@ -1,0 +1,42 @@
+package com.edunest.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Table(name = "teacher_class", schema = "school")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class TeacherClass {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "teacher_class_id")
+    private Long teacherClassId;
+
+    @Column(name = "tenant_id", nullable = false)
+    private Integer tenantId;
+
+    @Column(name = "teacher_id", nullable = false)
+    private Long teacherId;
+
+    @Column(name = "class_id", nullable = false)
+    private Long classId;
+
+    @Column(name = "section", length = 10)
+    private String section;
+
+    @Column(name = "academic_year_id", nullable = false)
+    private Long academicYearId;
+
+    @Column(name = "is_class_teacher")
+    @Builder.Default
+    private Boolean isClassTeacher = false;
+
+    @Column(name = "is_active")
+    @Builder.Default
+    private Boolean isActive = true;
+}

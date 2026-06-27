@@ -111,4 +111,7 @@ public class Teacher {
 
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
+
+    @Column(name = "employment_type_id")
+    private Long employmentTypeId;
 }
