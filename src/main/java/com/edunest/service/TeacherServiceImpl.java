@@ -1,25 +1,20 @@
 package com.edunest.service;
 
-import com.edunest.common.PasswordUtil;
-import com.edunest.configuration.JwtHelper;
-import com.edunest.dto.LoginRequest;
-import com.edunest.dto.LoginResponse;
+import com.edunest.dto.TeacherListResponse;
 import com.edunest.entity.EmploymentType;
 import com.edunest.entity.Role;
 import com.edunest.entity.Teacher;
-import com.edunest.error.CustomErrorHolder;
-import com.edunest.error.CustomException;
 import com.edunest.repository.EmploymentTypeRepository;
 import com.edunest.repository.RoleRepository;
 import com.edunest.repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
-public class TeacherServiceImpl implements TeacherService{
+public class TeacherServiceImpl implements TeacherService {
 
     @Autowired
     TeacherRepository teacherRepository;
@@ -30,44 +25,33 @@ public class TeacherServiceImpl implements TeacherService{
     @Autowired
     EmploymentTypeRepository employmentTypeRepository;
 
-    @Autowired
-    JwtHelper jwtHelper;
-
-    @Autowired
-    PasswordUtil passwordUtil;
-
     @Override
-    public LoginResponse login(LoginRequest loginRequest) {
+    public List<TeacherListResponse> getTeacherList(Integer tenantId) {
+        List<Teacher> teachers = teacherRepository.findByTenantIdAndIsActiveTrue(tenantId);
+        List<TeacherListResponse> responseList = new ArrayList<>();
 
-        Teacher teacher = teacherRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new CustomException(CustomErrorHolder.INVALID_CREDENTIALS));
+        for (Teacher teacher : teachers) {
+            Role role = roleRepository.findById(teacher.getRoleId()).orElse(null);
+            EmploymentType employmentType = employmentTypeRepository.findById(teacher.getEmploymentTypeId()).orElse(null);
 
-        if (!teacher.getIsActive()) {
-            throw new CustomException(CustomErrorHolder.ACCOUNT_INACTIVE);
+            String updatedByName = null;
+            Teacher updatedByTeacher = teacherRepository.findById(teacher.getUpdatedBy()).orElse(null);
+            if (updatedByTeacher != null) {
+                updatedByName = updatedByTeacher.getFirstName() + " " + updatedByTeacher.getLastName();
+            }
+            TeacherListResponse response = new TeacherListResponse();
+            response.setTeacherId(teacher.getTeacherId());
+            response.setMobileNo(teacher.getMobileNo());
+            response.setEmail(teacher.getEmail());
+            response.setTeacherName(teacher.getFirstName() + " " + teacher.getLastName());
+            response.setLastLogin(teacher.getLastLogin());
+            response.setRoleName(role != null ? role.getRoleName() : null);
+            response.setEmploymentType(employmentType != null ? employmentType.getEmploymentType() : null);
+            response.setUpdatedDate(teacher.getUpdatedDate());
+            response.setUpdatedBy(updatedByName);
+
+            responseList.add(response);
         }
-        // todo for password
-        teacher.setLastLogin(LocalDateTime.now());
-        teacherRepository.save(teacher);
-
-        String token = jwtHelper.generateAccessToken(teacher);
-
-        return LoginResponse.builder()
-                .teacherId(teacher.getTeacherId())
-                .tenantId(teacher.getTenantId())
-                .roleId(teacher.getRoleId())
-                .username(teacher.getUsername())
-                .employeeCode(teacher.getEmployeeCode())
-                .email(teacher.getEmail())
-                .firstName(teacher.getFirstName())
-                .lastName(teacher.getLastName())
-                .token(token)
-                .build();
-    }
-
-    public void getTeacherList(int tenantId){
-        Optional<Teacher> teacher = teacherRepository.findById(tenantId);
-        Optional<Role> role = roleRepository.findById(teacher.get().getRoleId());
-        Optional<EmploymentType> employmentType=employmentTypeRepository.findById(teacher.get().getEmploymentTypeId());
-
+        return responseList;
     }
 }

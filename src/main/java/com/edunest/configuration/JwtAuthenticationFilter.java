@@ -29,9 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtHelper jwtHelper;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         final String requestHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (requestHeader == null || !requestHeader.startsWith("Bearer ")) {
@@ -44,13 +42,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Teacher teacher = jwtHelper.parseToken(token);
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_" + teacher.getRoleId()));
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(teacher, null, authorities);
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(teacher, null, authorities);
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        } catch (MalformedJwtException | UnsupportedJwtException |
-                 IllegalArgumentException | ExpiredJwtException ex) {
+        } catch (MalformedJwtException | UnsupportedJwtException | IllegalArgumentException | ExpiredJwtException ex) {
             logger.error("JWT Error: " + ex.getMessage());
         }
 

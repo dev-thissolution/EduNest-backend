@@ -28,9 +28,6 @@ public class Teacher {
     @Column(name = "role_id", nullable = false)
     private Integer roleId;
 
-    @Column(name = "employee_code", nullable = false, unique = true, length = 30)
-    private String employeeCode;
-
     @Column(name = "username", nullable = false, unique = true, length = 100)
     private String username;
 
@@ -104,7 +101,7 @@ public class Teacher {
     private LocalDateTime updatedDate;
 
     @Column(name = "updated_by")
-    private Long updatedBy;
+    private Integer updatedBy;
 
     @Column(name = "last_login")
     private LocalDateTime lastLogin;

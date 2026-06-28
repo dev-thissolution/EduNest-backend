@@ -14,7 +14,6 @@ public class LoginResponse {
     private Integer tenantId;
     private Integer roleId;
     private String username;
-    private String employeeCode;
     private String email;
     private String firstName;
     private String lastName;

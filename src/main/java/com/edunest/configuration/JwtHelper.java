@@ -31,9 +31,9 @@ public class JwtHelper {
         Date expiration = new Date(System.currentTimeMillis() + jwtExpiration * 1000);
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("teacherId",   teacher.getTeacherId());
-        claims.put("tenantId",    teacher.getTenantId());
-        claims.put("roleId",      teacher.getRoleId());
+        claims.put("teacherId", teacher.getTeacherId());
+        claims.put("tenantId", teacher.getTenantId());
+        claims.put("roleId", teacher.getRoleId());
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -55,7 +55,7 @@ public class JwtHelper {
         teacher.setEmail(body.getSubject());
         teacher.setTeacherId(Long.parseLong(body.get("teacherId").toString()));
         teacher.setTenantId(Integer.parseInt(body.get("tenantId").toString()));
-        teacher.setRoleId(Long.parseLong(body.get("roleId").toString()));
+        teacher.setRoleId(Integer.parseInt(body.get("roleId").toString()));
         return teacher;
     }
 

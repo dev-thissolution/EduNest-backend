@@ -1,6 +1,11 @@
 package com.edunest.error;
 
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class CustomException extends RuntimeException {
     private String error;
     private String errorTitle;
@@ -13,27 +18,4 @@ public class CustomException extends RuntimeException {
         this.errorMessage = error.getErrorMessage();
     }
 
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
-
-    public String getErrorTitle() {
-        return errorTitle;
-    }
-
-    public void setErrorTitle(String errorTitle) {
-        this.errorTitle = errorTitle;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
 }

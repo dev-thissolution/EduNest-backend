@@ -1,0 +1,10 @@
+package com.edunest.repository;
+
+import com.edunest.entity.ClassMaster;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface ClassMasterRepository extends JpaRepository<ClassMaster, Integer> {
+    List<ClassMaster> findByTenantId(Integer tenantId);
+}
