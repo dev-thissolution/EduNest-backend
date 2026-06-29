@@ -1,12 +1,12 @@
 package com.edunest.service;
 
-import com.edunest.common.PasswordUtil;
 import com.edunest.configuration.JwtHelper;
 import com.edunest.dto.LoginRequest;
 import com.edunest.dto.LoginResponse;
 import com.edunest.entity.Teacher;
 import com.edunest.error.CustomErrorHolder;
 import com.edunest.error.CustomException;
+import com.edunest.helper.CryptoHelper;
 import com.edunest.repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +22,6 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     JwtHelper jwtHelper;
 
-    @Autowired
-    PasswordUtil passwordUtil;
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
@@ -33,12 +31,27 @@ public class AuthServiceImpl implements AuthService {
         if (!teacher.getIsActive()) {
             throw new CustomException(CustomErrorHolder.ACCOUNT_INACTIVE);
         }
-        // todo for password
+
+        String encryptedPassword = CryptoHelper.encryptPassword(loginRequest.getPassword(), teacher.getHashkey());
+        if (!encryptedPassword.equals(teacher.getPassword())) {
+            throw new CustomException(CustomErrorHolder.INVALID_CREDENTIALS);
+        }
+
         teacher.setLastLogin(LocalDateTime.now());
         teacherRepository.save(teacher);
 
         String token = jwtHelper.generateAccessToken(teacher);
 
-        return LoginResponse.builder().teacherId(teacher.getTeacherId()).tenantId(teacher.getTenantId()).roleId(teacher.getRoleId()).username(teacher.getUsername()).email(teacher.getEmail()).firstName(teacher.getFirstName()).lastName(teacher.getLastName()).token(token).build();
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setTeacherId(teacher.getTeacherId());
+        loginResponse.setTenantId(teacher.getTenantId());
+        loginResponse.setRoleId(teacher.getRoleId());
+        loginResponse.setUsername(teacher.getUsername());
+        loginResponse.setEmail(teacher.getEmail());
+        loginResponse.setFirstName(teacher.getFirstName());
+        loginResponse.setLastName(teacher.getLastName());
+        loginResponse.setToken(token);
+
+        return loginResponse;
     }
 }
