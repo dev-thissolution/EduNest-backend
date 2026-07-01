@@ -4,7 +4,6 @@ import com.edunest.configuration.JwtHelper;
 import com.edunest.dto.LoginRequest;
 import com.edunest.dto.LoginResponse;
 import com.edunest.entity.Teacher;
-import com.edunest.error.CustomErrorHolder;
 import com.edunest.error.CustomException;
 import com.edunest.helper.CryptoHelper;
 import com.edunest.repository.TeacherRepository;
@@ -26,15 +25,16 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
 
-        Teacher teacher = teacherRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new CustomException(CustomErrorHolder.INVALID_CREDENTIALS));
+        Teacher teacher = teacherRepository.findByEmail(loginRequest.getEmail()).
+                orElseThrow(() -> new CustomException("Teacher", "Teacher not found"));
 
         if (!teacher.getIsActive()) {
-            throw new CustomException(CustomErrorHolder.ACCOUNT_INACTIVE);
+            throw new CustomException("account", "Account is inactive. Please contact admin");
         }
 
         String encryptedPassword = CryptoHelper.encryptPassword(loginRequest.getPassword(), teacher.getHashkey());
         if (!encryptedPassword.equals(teacher.getPassword())) {
-            throw new CustomException(CustomErrorHolder.INVALID_CREDENTIALS);
+            throw new CustomException("credentials", "Invalid email or password");
         }
 
         teacher.setLastLogin(LocalDateTime.now());

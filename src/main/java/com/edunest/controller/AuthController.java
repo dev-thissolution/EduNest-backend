@@ -5,7 +5,6 @@ import com.edunest.dto.LoginRequest;
 import com.edunest.dto.LoginResponse;
 import com.edunest.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,9 +20,13 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<ResponseObject<LoginResponse>> login(@RequestBody LoginRequest loginRequest) {
-        ResponseObject<LoginResponse> responseObject = new ResponseObject<>();
         LoginResponse loginResponse = authService.login(loginRequest);
-        responseObject.setData(loginResponse);
-        return new ResponseEntity<>(responseObject, HttpStatus.OK);
+
+        ResponseObject<LoginResponse> response = new ResponseObject<>();
+        response.setSuccess(true);
+        response.setErrors(null);
+        response.setData(loginResponse);
+
+        return ResponseEntity.ok(response);
     }
 }
