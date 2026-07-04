@@ -108,4 +108,6 @@ public class Teacher {
 
     @Column(name = "employment_type_id")
     private Integer employmentTypeId;
+
+    private String teacherName;
 }

@@ -24,7 +24,6 @@ public class AuthController {
 
         ResponseObject<LoginResponse> response = new ResponseObject<>();
         response.setSuccess(true);
-        response.setErrors(null);
         response.setData(loginResponse);
 
         return ResponseEntity.ok(response);

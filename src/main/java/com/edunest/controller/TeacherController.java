@@ -7,7 +7,6 @@ import com.edunest.service.TeacherService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,9 +29,14 @@ public class TeacherController {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         String token = jwtHelper.cleanToken(authHeader);
         int tenantId = jwtHelper.extractTenantId(token);
-        ResponseObject<List<TeacherListResponse>> responseObject = new ResponseObject<>();
+
         List<TeacherListResponse> teacherList = teacherService.getTeacherList(tenantId);
-        responseObject.setData(teacherList);
-        return new ResponseEntity<>(responseObject, HttpStatus.OK);
+
+        ResponseObject<List<TeacherListResponse>> response = new ResponseObject<>();
+        response.setSuccess(true);
+        response.setData(teacherList);
+
+        return ResponseEntity.ok(response);
     }
+
 }

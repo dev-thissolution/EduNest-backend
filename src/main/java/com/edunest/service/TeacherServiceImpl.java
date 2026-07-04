@@ -4,6 +4,7 @@ import com.edunest.dto.TeacherListResponse;
 import com.edunest.entity.EmploymentType;
 import com.edunest.entity.Role;
 import com.edunest.entity.Teacher;
+import com.edunest.error.CustomException;
 import com.edunest.repository.EmploymentTypeRepository;
 import com.edunest.repository.RoleRepository;
 import com.edunest.repository.TeacherRepository;

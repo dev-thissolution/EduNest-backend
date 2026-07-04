@@ -34,6 +34,7 @@ public class JwtHelper {
         claims.put("teacherId", teacher.getTeacherId());
         claims.put("tenantId", teacher.getTenantId());
         claims.put("roleId", teacher.getRoleId());
+        claims.put("teacherName", teacher.getFirstName() + " " + teacher.getLastName());
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -56,6 +57,7 @@ public class JwtHelper {
         teacher.setTeacherId(Long.parseLong(body.get("teacherId").toString()));
         teacher.setTenantId(Integer.parseInt(body.get("tenantId").toString()));
         teacher.setRoleId(Integer.parseInt(body.get("roleId").toString()));
+        teacher.setTeacherName(body.get("teacherName", String.class));
         return teacher;
     }
 

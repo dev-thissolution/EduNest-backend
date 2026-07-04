@@ -1,5 +1,7 @@
 package com.edunest.dto;
 
+import com.edunest.entity.Teacher;
+import com.edunest.entity.Tenant;
 import lombok.*;
 
 @Getter
@@ -7,12 +9,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginResponse {
-    private Long teacherId;
-    private Integer tenantId;
-    private Integer roleId;
-    private String username;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String token;
+    private String session;
+    private String refresh;
+    private Teacher teacher;
+    private Tenant tenant;
 }

@@ -10,7 +10,6 @@ import com.edunest.service.LookupService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,18 +29,25 @@ public class LookupController {
 
     @GetMapping("/role")
     public ResponseEntity<ResponseObject<List<Role>>> getAllRoles() {
-        ResponseObject<List<Role>> responseObject = new ResponseObject<>();
         List<Role> roles = lookupService.getAllRoles();
-        responseObject.setData(roles);
-        return new ResponseEntity<>(responseObject, HttpStatus.OK);
+
+        ResponseObject<List<Role>> response = new ResponseObject<>();
+        response.setSuccess(true);
+        response.setErrors(null);
+        response.setData(roles);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/employmentTypes")
     public ResponseEntity<ResponseObject<List<EmploymentType>>> getAllEmployType() {
-        ResponseObject<List<EmploymentType>> responseObject = new ResponseObject<>();
         List<EmploymentType> employmentTypes = lookupService.getAllEmployType();
-        responseObject.setData(employmentTypes);
-        return new ResponseEntity<>(responseObject, HttpStatus.OK);
+
+        ResponseObject<List<EmploymentType>> response = new ResponseObject<>();
+        response.setSuccess(true);
+        response.setData(employmentTypes);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/subject")
@@ -49,10 +55,14 @@ public class LookupController {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         String token = jwtHelper.cleanToken(authHeader);
         int tenantId = jwtHelper.extractTenantId(token);
-        ResponseObject<List<Subject>> responseObject = new ResponseObject<>();
+
         List<Subject> subjects = lookupService.getAllSubject(tenantId);
-        responseObject.setData(subjects);
-        return new ResponseEntity<>(responseObject, HttpStatus.OK);
+
+        ResponseObject<List<Subject>> response = new ResponseObject<>();
+        response.setSuccess(true);
+        response.setData(subjects);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/classMaster")
@@ -60,9 +70,13 @@ public class LookupController {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         String token = jwtHelper.cleanToken(authHeader);
         int tenantId = jwtHelper.extractTenantId(token);
-        ResponseObject<List<ClassMaster>> responseObject = new ResponseObject<>();
+
         List<ClassMaster> classMasters = lookupService.getAllClassMaster(tenantId);
-        responseObject.setData(classMasters);
-        return new ResponseEntity<>(responseObject, HttpStatus.OK);
+
+        ResponseObject<List<ClassMaster>> response = new ResponseObject<>();
+        response.setSuccess(true);
+        response.setData(classMasters);
+
+        return ResponseEntity.ok(response);
     }
 }
