@@ -15,22 +15,22 @@ public class TeacherClass {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "teacher_class_id")
-    private Long teacherClassId;
+    private Integer teacherClassId;
 
     @Column(name = "tenant_id", nullable = false)
     private Integer tenantId;
 
     @Column(name = "teacher_id", nullable = false)
-    private Long teacherId;
+    private Integer teacherId;
 
     @Column(name = "class_id", nullable = false)
-    private Long classId;
+    private Integer classId;
 
     @Column(name = "section", length = 10)
     private String section;
 
     @Column(name = "academic_year_id", nullable = false)
-    private Long academicYearId;
+    private Integer academicYearId;
 
     @Column(name = "is_class_teacher")
     @Builder.Default

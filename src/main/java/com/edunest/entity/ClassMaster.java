@@ -15,7 +15,7 @@ public class ClassMaster {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "class_id")
-    private Long classId;
+    private Integer classId;
 
     @Column(name = "tenant_id", nullable = false)
     private Integer tenantId;

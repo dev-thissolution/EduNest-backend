@@ -54,7 +54,7 @@ public class JwtHelper {
 
         Teacher teacher = new Teacher();
         teacher.setEmail(body.getSubject());
-        teacher.setTeacherId(Long.parseLong(body.get("teacherId").toString()));
+        teacher.setTeacherId(Integer.valueOf((body.get("teacherId").toString())));
         teacher.setTenantId(Integer.parseInt(body.get("tenantId").toString()));
         teacher.setRoleId(Integer.parseInt(body.get("roleId").toString()));
         teacher.setTeacherName(body.get("teacherName", String.class));
@@ -68,15 +68,14 @@ public class JwtHelper {
         return authHeader;
     }
 
-    public String extractTeacherId(String token) {
+    public Integer extractTeacherId(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(signingKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
 
-        Long teacherId = claims.get("teacherId", Long.class);
-        return teacherId != null ? teacherId.toString() : null;
+        return claims.get("teacherId", Integer.class);
     }
 
     public Integer extractTenantId(String token) {

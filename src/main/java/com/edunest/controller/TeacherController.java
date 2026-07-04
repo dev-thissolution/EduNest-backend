@@ -3,14 +3,13 @@ package com.edunest.controller;
 import com.edunest.common.ResponseObject;
 import com.edunest.configuration.JwtHelper;
 import com.edunest.dto.TeacherListResponse;
+import com.edunest.dto.TeacherDTO;
 import com.edunest.service.TeacherService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,17 +23,56 @@ public class TeacherController {
     @Autowired
     JwtHelper jwtHelper;
 
-    @GetMapping("/List")
+    @GetMapping("/list")
     public ResponseEntity<ResponseObject<List<TeacherListResponse>>> getTeacherList(HttpServletRequest request) {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         String token = jwtHelper.cleanToken(authHeader);
         int tenantId = jwtHelper.extractTenantId(token);
-
-        List<TeacherListResponse> teacherList = teacherService.getTeacherList(tenantId);
+        int teacherId = jwtHelper.extractTeacherId(token);
 
         ResponseObject<List<TeacherListResponse>> response = new ResponseObject<>();
         response.setSuccess(true);
-        response.setData(teacherList);
+        response.setData(teacherService.getTeacherList(tenantId, teacherId));
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{teacherId}")
+    public ResponseEntity<ResponseObject<Boolean>> saveTeacher(
+            HttpServletRequest request,
+            @PathVariable(required = false) Integer teacherId,
+            @RequestBody TeacherDTO teacherDTO) {
+
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = jwtHelper.cleanToken(authHeader);
+        Integer tenantId = jwtHelper.extractTenantId(token);
+        Integer loginTeacherId = jwtHelper.extractTeacherId(token);
+
+        ResponseObject<Boolean> response = new ResponseObject<>();
+        response.setSuccess(true);
+        response.setData(teacherService.saveTeacher(teacherId, tenantId, loginTeacherId, teacherDTO));
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{teacherId}")
+    public ResponseEntity<ResponseObject<TeacherDTO>> getTeacherById(
+            @PathVariable Integer teacherId) {
+
+        ResponseObject<TeacherDTO> response = new ResponseObject<>();
+        response.setSuccess(true);
+        response.setData(teacherService.getTeacherById(teacherId));
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{teacherId}")
+    public ResponseEntity<ResponseObject<String>> deleteTeacher(HttpServletRequest request, @PathVariable Integer teacherId) {
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = jwtHelper.cleanToken(authHeader);
+        int loginTeacherId = jwtHelper.extractTeacherId(token);
+
+        ResponseObject<String> response = new ResponseObject<>();
+        response.setSuccess(true);
+        response.setData(teacherService.deleteTeacher(teacherId, loginTeacherId) ? "Teacher deleted successfully" : "Teacher not deleted");
 
         return ResponseEntity.ok(response);
     }

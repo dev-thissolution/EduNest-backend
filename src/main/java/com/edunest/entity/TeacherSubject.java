@@ -15,16 +15,16 @@ public class TeacherSubject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "teacher_subject_id")
-    private Long teacherSubjectId;
+    private Integer teacherSubjectId;
 
     @Column(name = "tenant_id", nullable = false)
     private Integer tenantId;
 
     @Column(name = "teacher_id", nullable = false)
-    private Long teacherId;
+    private Integer teacherId;
 
     @Column(name = "subject_id", nullable = false)
-    private Long subjectId;
+    private Integer subjectId;
 
     @Column(name = "is_active")
     @Builder.Default

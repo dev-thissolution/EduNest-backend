@@ -27,25 +27,20 @@ public class LookupController {
     @Autowired
     JwtHelper jwtHelper;
 
-    @GetMapping("/role")
+    @GetMapping("/roles")
     public ResponseEntity<ResponseObject<List<Role>>> getAllRoles() {
-        List<Role> roles = lookupService.getAllRoles();
-
         ResponseObject<List<Role>> response = new ResponseObject<>();
         response.setSuccess(true);
-        response.setErrors(null);
-        response.setData(roles);
+        response.setData(lookupService.getAllRoles());
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/employmentTypes")
     public ResponseEntity<ResponseObject<List<EmploymentType>>> getAllEmployType() {
-        List<EmploymentType> employmentTypes = lookupService.getAllEmployType();
-
         ResponseObject<List<EmploymentType>> response = new ResponseObject<>();
         response.setSuccess(true);
-        response.setData(employmentTypes);
+        response.setData(lookupService.getAllEmployType());
 
         return ResponseEntity.ok(response);
     }
@@ -56,11 +51,9 @@ public class LookupController {
         String token = jwtHelper.cleanToken(authHeader);
         int tenantId = jwtHelper.extractTenantId(token);
 
-        List<Subject> subjects = lookupService.getAllSubject(tenantId);
-
         ResponseObject<List<Subject>> response = new ResponseObject<>();
         response.setSuccess(true);
-        response.setData(subjects);
+        response.setData(lookupService.getAllSubject(tenantId));
 
         return ResponseEntity.ok(response);
     }
@@ -71,11 +64,9 @@ public class LookupController {
         String token = jwtHelper.cleanToken(authHeader);
         int tenantId = jwtHelper.extractTenantId(token);
 
-        List<ClassMaster> classMasters = lookupService.getAllClassMaster(tenantId);
-
         ResponseObject<List<ClassMaster>> response = new ResponseObject<>();
         response.setSuccess(true);
-        response.setData(classMasters);
+        response.setData(lookupService.getAllClassMaster(tenantId));
 
         return ResponseEntity.ok(response);
     }

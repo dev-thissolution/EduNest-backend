@@ -10,13 +10,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class TeacherListResponse {
-    private Long teacherId;
+    private int teacherId;
+    private int roleId;
+    private int employmentId;
     private String mobileNo;
     private String email;
     private String teacherName;
     private LocalDateTime lastLogin;
-    private String roleName;
-    private String employmentType;
     private LocalDateTime updatedDate;
     private String updatedBy;
 }

@@ -20,11 +20,9 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<ResponseObject<LoginResponse>> login(@RequestBody LoginRequest loginRequest) {
-        LoginResponse loginResponse = authService.login(loginRequest);
-
         ResponseObject<LoginResponse> response = new ResponseObject<>();
         response.setSuccess(true);
-        response.setData(loginResponse);
+        response.setData(authService.login(loginRequest));
 
         return ResponseEntity.ok(response);
     }

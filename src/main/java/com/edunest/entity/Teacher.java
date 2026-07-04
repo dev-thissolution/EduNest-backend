@@ -20,7 +20,7 @@ public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "teacher_id")
-    private Long teacherId;
+    private Integer teacherId;
 
     @Column(name = "tenant_id", nullable = false)
     private Integer tenantId;
@@ -28,8 +28,8 @@ public class Teacher {
     @Column(name = "role_id", nullable = false)
     private Integer roleId;
 
-    @Column(name = "username", nullable = false, unique = true, length = 100)
-    private String username;
+    @Column(name = "employment_type_id")
+    private Integer employmentTypeId;
 
     @Column(name = "password", nullable = false, length = 255)
     private String password;
@@ -40,9 +40,6 @@ public class Teacher {
     @Column(name = "first_name", nullable = false, length = 100)
     private String firstName;
 
-    @Column(name = "middle_name", length = 100)
-    private String middleName;
-
     @Column(name = "last_name", nullable = false, length = 100)
     private String lastName;
 
@@ -51,9 +48,6 @@ public class Teacher {
 
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
-
-    @Column(name = "blood_group", length = 5)
-    private String bloodGroup;
 
     @Column(name = "mobile_no", nullable = false, length = 15)
     private String mobileNo;
@@ -70,17 +64,11 @@ public class Teacher {
     @Column(name = "address_line1", length = 150)
     private String addressLine1;
 
-    @Column(name = "address_line2", length = 150)
-    private String addressLine2;
-
     @Column(name = "city", length = 100)
     private String city;
 
     @Column(name = "state", length = 100)
     private String state;
-
-    @Column(name = "country", length = 100)
-    private String country;
 
     @Column(name = "postal_code", length = 10)
     private String postalCode;
@@ -94,7 +82,7 @@ public class Teacher {
     private LocalDateTime createdDate;
 
     @Column(name = "created_by", nullable = false, updatable = false)
-    private Long createdBy;
+    private Integer createdBy;
 
     @UpdateTimestamp
     @Column(name = "updated_date")
@@ -105,9 +93,6 @@ public class Teacher {
 
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
-
-    @Column(name = "employment_type_id")
-    private Integer employmentTypeId;
 
     private String teacherName;
 }
