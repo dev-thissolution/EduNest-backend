@@ -1,5 +1,6 @@
 package com.edunest.service;
 
+import com.edunest.constant.Constant;
 import com.edunest.entity.ClassMaster;
 import com.edunest.entity.EmploymentType;
 import com.edunest.entity.Role;
@@ -30,7 +31,7 @@ public class LookupServiceImpl implements LookupService {
 
     @Override
     public List<Role> getAllRoles() {
-        return roleRepository.findByRoleIdNot(1);
+        return roleRepository.findByRoleIdNot(Constant.SUPER_ADMIN);
     }
 
     @Override
