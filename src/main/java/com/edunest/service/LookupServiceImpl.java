@@ -46,7 +46,7 @@ public class LookupServiceImpl implements LookupService {
 
     @Override
     public List<ClassMaster> getAllClassMaster(int tenantId) {
-        return classMasterRepository.findByTenantId(tenantId);
+        return classMasterRepository.findByTenantIdAndIsActiveTrue(tenantId);
     }
 
 }
