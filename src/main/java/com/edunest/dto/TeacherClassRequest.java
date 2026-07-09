@@ -8,4 +8,5 @@ import lombok.*;
 @AllArgsConstructor
 public class TeacherClassRequest {
     private Integer classId;
+    private Integer sectionId;
 }

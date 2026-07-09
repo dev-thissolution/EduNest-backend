@@ -11,9 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -68,6 +66,19 @@ public class LookupController {
         response.setSuccess(true);
         response.setData(lookupService.getAllClassMaster(tenantId));
 
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/subject/save")
+    public ResponseEntity<ResponseObject<Boolean>> saveSubject(HttpServletRequest request, @RequestBody Subject subjectRequest) {
+
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = jwtHelper.cleanToken(authHeader);
+        Integer tenantId = jwtHelper.extractTenantId(token);
+
+        ResponseObject<Boolean> response = new ResponseObject<>();
+        response.setSuccess(true);
+        response.setData(lookupService.saveSubject(tenantId, subjectRequest));
         return ResponseEntity.ok(response);
     }
 }

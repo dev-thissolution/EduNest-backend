@@ -18,4 +18,6 @@ public interface LookupService {
     List<Subject> getAllSubject(int tenantId);
 
     List<ClassMaster> getAllClassMaster(int tenantId);
+
+    boolean saveSubject(Integer tenantId, Subject subject);
 }

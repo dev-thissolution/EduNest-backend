@@ -49,4 +49,15 @@ public class LookupServiceImpl implements LookupService {
         return classMasterRepository.findByTenantIdAndIsActiveTrue(tenantId);
     }
 
+    @Override
+    public boolean saveSubject(Integer tenantId, Subject request) {
+        Subject subject = new Subject();
+        subject.setTenantId(tenantId);
+        subject.setSubjectName(request.getSubjectName());
+        subject.setSubjectCode(request.getSubjectCode());
+        subject.setIsActive(true);
+        subjectRepository.save(subject);
+        return true;
+    }
+
 }
