@@ -110,9 +110,7 @@ public class ClassServiceImpl implements ClassService {
         ClassMaster classMaster;
 
         AcademicYear currentYear = academicYearRepository.findByTenantIdAndIsCurrentTrue(tenantId);
-        if (currentYear == null) {
-            throw new CustomException("academicYear", "No active academic year found. Please create one first.");
-        }
+
         Integer academicYearId = currentYear.getAcademicYearId();
 
         if (isEdit) {
