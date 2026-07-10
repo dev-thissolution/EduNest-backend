@@ -1,9 +1,9 @@
 package com.edunest.service;
 
-import com.edunest.dto.TeacherClassRequest;
-import com.edunest.dto.TeacherDTO;
-import com.edunest.dto.TeacherListResponse;
-import com.edunest.dto.TeacherSubjectRequest;
+import com.edunest.dto.teacher.TeacherClassRequest;
+import com.edunest.dto.teacher.TeacherDTO;
+import com.edunest.dto.teacher.TeacherListResponse;
+import com.edunest.dto.teacher.TeacherSubjectRequest;
 import com.edunest.entity.Teacher;
 import com.edunest.entity.TeacherClass;
 import com.edunest.entity.TeacherSubject;
