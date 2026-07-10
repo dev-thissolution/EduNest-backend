@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class ClassFee {
 
     @Id
@@ -32,6 +31,5 @@ public class ClassFee {
     private BigDecimal annualFee;
 
     @Column(name = "is_active")
-    @Builder.Default
     private Boolean isActive = true;
 }

@@ -122,7 +122,6 @@ public class TeacherServiceImpl implements TeacherService {
         Integer savedTeacherId = savedTeacher.getTeacherId();
 
         if (request.getTeacherClasses() != null && !request.getTeacherClasses().isEmpty()) {
-            // Delete old records on edit
             if (isEdit) {
                 List<TeacherClass> oldClasses = teacherClassRepository.findByTeacherIdAndTenantId(savedTeacherId, tenantId);
                 teacherClassRepository.deleteAll(oldClasses);
@@ -138,7 +137,6 @@ public class TeacherServiceImpl implements TeacherService {
         }
 
         if (request.getTeacherSubjects() != null && !request.getTeacherSubjects().isEmpty()) {
-            // Delete old records on edit
             if (isEdit) {
                 List<TeacherSubject> oldSubjects = teacherSubjectRepository.findByTeacherIdAndTenantId(savedTeacherId, tenantId);
                 teacherSubjectRepository.deleteAll(oldSubjects);
@@ -157,14 +155,11 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public TeacherDTO getTeacherById(Integer teacherId) {
-        Teacher teacher = teacherRepository.findById(teacherId)
-                .orElseThrow(() -> new CustomException("Teacher", "Teacher not found"));
+        Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() -> new CustomException("Teacher", "Teacher not found"));
 
-        List<TeacherClass> teacherClasses = teacherClassRepository
-                .findByTeacherIdAndTenantId(teacherId, teacher.getTenantId());
+        List<TeacherClass> teacherClasses = teacherClassRepository.findByTeacherIdAndTenantId(teacherId, teacher.getTenantId());
 
-        List<TeacherSubject> teacherSubjects = teacherSubjectRepository
-                .findByTeacherIdAndTenantId(teacherId, teacher.getTenantId());
+        List<TeacherSubject> teacherSubjects = teacherSubjectRepository.findByTeacherIdAndTenantId(teacherId, teacher.getTenantId());
 
         List<TeacherClassRequest> teacherClassRequests = new ArrayList<>();
         for (TeacherClass tc : teacherClasses) {
